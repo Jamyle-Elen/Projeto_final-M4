@@ -1,4 +1,4 @@
-import { Wastes } from "../models/Waste.model.js";
+import { Wastes } from "../models/Waste.Model.js";
 import { Sequelize } from 'sequelize';
 
 export const reports = async (req, res) => {
