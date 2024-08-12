@@ -1,5 +1,5 @@
 import { Wastes } from "../models/Waste.Model.js";
-import { wasteFilter } from "./wasteFilter.controller.js";
+import { wasteFilter } from "./wasteFilterController.js";
 
 export const createWaste = async (req, res) => {
   
