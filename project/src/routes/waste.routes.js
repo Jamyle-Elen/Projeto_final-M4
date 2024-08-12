@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createWaste, getAllWastes, getWasteById, updateWaste, deleteWaste } from "../controllers/Waste.controller.js";
+import { createWaste, getAllWastes, getWasteById, updateWaste, deleteWaste } from "../controllers/wasteController.js";
 
 const wastesRouter = Router();
 
