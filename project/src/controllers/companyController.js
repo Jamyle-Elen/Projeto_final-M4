@@ -1,19 +1,20 @@
 import { where } from "sequelize";
 import { Company } from "../models/Company.Model.js";
+import { Wastes } from "../models/Waste.Model.js";
+
+await Company.sync();
 
 export const createCompany = async(req, res) => {
-    const {name, location, wastesId, capacityStorage, status} = req.body;
-    await Company.sync();
+    const {name, location, capacityStorage, status} = req.body;
 
     try{
-        if(!name || !location || !wastesId || !capacityStorage || status){
+        if(!name || !location || !capacityStorage || typeof status === 'undefined'){
             return res.status(400).json({menssage:"All fields are required"});
         }
 
         const newCompany = await Company.create({
             name, 
             location, 
-            wastesId, 
             capacityStorage,
             status
         });
@@ -42,6 +43,16 @@ export const getAllCompany = async(req, res) => {
 };
 
 export const getCompayId = async(req, res) =>{
+    async function getWastesByCompanyId(companyId) {
+        const wastes = await Wastes.findAll({
+            where: {
+                companyId
+            },
+            attributes: ['id']
+        });
+        return wastes.map(waste => waste.id);
+    }
+
     try{
 
         const { id } = req.params;
@@ -55,26 +66,28 @@ export const getCompayId = async(req, res) =>{
             return res.status(400).json({menssage: "Company no found"});
         }
 
+        const wastesId = await getWastesByCompanyId(id);
+        company.dataValues.wastesId = wastesId;
+
         return res.status(200).json({ company });
 
     }catch(error){
-        return res.status(400).json({message: error});
+        return res.status(400).json({message: error.message});
     }
 }
 
 export const updateCompany = async(req, res) =>{
     try{
         const { id } = req.params;
-        const { name, location, wastesId, capacityStorage, status } = req.body;
+        const { name, location, /*wastesId,*/ capacityStorage, status } = req.body;
 
-        if(!id || !name || !location || !wastesId || !capacityStorage || status){
+        if(!id || !name || !location /*|| !wastesId */|| !capacityStorage || status){
             return res.status(400).json({menssage:"All fields are required"});
         }
 
         await Company.update({
             name, 
             location, 
-            wastesId, 
             capacityStorage,
             status
         },{

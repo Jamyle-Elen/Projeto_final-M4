@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { database } from "../config/database.js";
+import { Company } from "./Company.Model.js";
 
 export const Wastes = database.define(
   "Wastes",
@@ -12,10 +13,10 @@ export const Wastes = database.define(
     companyId: {
       type: DataTypes.UUID,
       allowNull: false,
-      // references: {
-      //   model: "Companies",
-      //   key: "id"
-      // }
+      references: {
+        model: Company,
+        key: "id"
+      }
     },
     contactPhone: {
       type: DataTypes.STRING(),
@@ -45,19 +46,5 @@ export const Wastes = database.define(
   }
 );
 
-const dados = 
-
-{
-  id: "b123e456-7e89-12d3-a456-426614174000",
-  companyId: "a123e456-7e89-12d3-a456-426614174000",
-  wastesName: "Pen Drive",
-  composition: "Plastic",
-  quantity: "150.75",
-  location: "Warehouse A",
-  availability: "7 days",
-  contact: {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+1234567890"
-  }
-}
+Company.hasMany(Wastes, { foreignKey: 'companyId' });
+Wastes.belongsTo(Company, { foreignKey: 'companyId' });

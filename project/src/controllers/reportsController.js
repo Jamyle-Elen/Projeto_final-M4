@@ -26,7 +26,6 @@ export const reports = async (req, res) => {
 
     if (wastes.length < 1) return res.status(404).json({ message: `No waste found with companyId: ${companyId}` });
 
-    //retornar id da empresa, total de registros e os resíduos
     return res.status(200).json({ companyId, "totalRecords": allWastes.length, wastes });
   } catch (error) {
     return res.status(500).json({ message: error.message });
