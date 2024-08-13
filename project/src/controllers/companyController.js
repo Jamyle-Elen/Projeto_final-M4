@@ -6,8 +6,8 @@ export const createCompany = async(req, res) => {
     await Company.sync();
 
     try{
-        if(!name || !location || !wastesId || !capacityStorage || status){
-            return res.status(400).json({menssage:"All fields are required"});
+        if (!name || !location || !wastesId || !capacityStorage || !status) {
+            return res.status(400).json({ message: "All fields are required" });
         }
 
         const newCompany = await Company.create({
@@ -18,7 +18,7 @@ export const createCompany = async(req, res) => {
             status
         });
         
-        return res.status(201).json({menssage: "Company created successfully", newCompany});
+        return res.status(201).json({message: "Company created successfully", newCompany});
 
     }catch(error){
        return res.status(400).json({message: error});
@@ -31,7 +31,7 @@ export const getAllCompany = async(req, res) => {
         const companies = await Company.findAll();
         
         if(companies.length < 1){
-            return res.status(400).json({menssage: "No company found"});
+            return res.status(400).json({message: "No company found"});
         }
 
         return res.status(200).json({ companies });
@@ -41,18 +41,18 @@ export const getAllCompany = async(req, res) => {
     }
 };
 
-export const getCompayId = async(req, res) =>{
+export const getCompanyId = async(req, res) =>{
     try{
 
         const { id } = req.params;
         const company = await Company.findOne({where: { id }});
 
         if(!id){
-            return res.status(400).json({menssage: "Company id is required"});
+            return res.status(400).json({message: "Company id is required"});
         }
 
         if(!company){
-            return res.status(400).json({menssage: "Company no found"});
+            return res.status(400).json({message: "Company no found"});
         }
 
         return res.status(200).json({ company });
@@ -68,7 +68,7 @@ export const updateCompany = async(req, res) =>{
         const { name, location, wastesId, capacityStorage, status } = req.body;
 
         if(!id || !name || !location || !wastesId || !capacityStorage || status){
-            return res.status(400).json({menssage:"All fields are required"});
+            return res.status(400).json({message:"All fields are required"});
         }
 
         await Company.update({
@@ -81,7 +81,7 @@ export const updateCompany = async(req, res) =>{
             where: { id }
         });
 
-        return res.status(200).json({menssage: "Company update successfully"});
+        return res.status(200).json({message: "Company update successfully"});
 
     }catch(error){
         return res.status(400).json({message: error});
@@ -95,14 +95,14 @@ export const deleteCompany = async(req, res) =>{
         const { id } = req.params;
 
         if(!id){
-            return res.status(400).json({menssage: "Company id is required"});
+            return res.status(400).json({message: "Company id is required"});
         }
 
         await Company.destroy({
             where: { id }
         });
 
-        return res.status(200).json({menssage: "Company deleted successfully"});
+        return res.status(200).json({message: "Company deleted successfully"});
 
     }catch(error){
         return res.status(400).json({message: error});
