@@ -8,9 +8,9 @@ import { companyRouter } from './company.routes.js';
 
 const router = Router();
 
-router.use('/wastes', wastesRouter);
-router.use('/reports', reportsRouter);
-router.use('/companies', companyRouter);
+router.use('/', wastesRouter);
+router.use('/', reportsRouter);
+router.use('/', companyRouter);
 // collection
 // router.use('/auth', authRouter);
 // history

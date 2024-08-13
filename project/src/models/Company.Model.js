@@ -17,14 +17,6 @@ export const Company = database.define("Company",
             type: DataTypes.STRING(200),
             allowNull: false
         },
-        wastesId:{
-            type: DataTypes.UUID,
-            allowNull: false,
-            references:{
-                model: Wastes,
-                key: "id"
-            }
-        },
         capacityStorage:{
             type: DataTypes.INTEGER,
             allowNull: false,
