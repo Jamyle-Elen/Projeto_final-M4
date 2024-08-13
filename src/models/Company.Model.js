@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { database } from "../config/database.js";
-import { Wastes } from "../models/Waste.Model.js"
+import { Wastes } from "./Waste.Model.js"
 
 export const Company = database.define("Company",
     {

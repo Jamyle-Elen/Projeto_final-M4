@@ -42,7 +42,7 @@ export const getAllCompany = async(req, res) => {
     }
 };
 
-export const getCompayId = async(req, res) =>{
+export const getCompanyId = async(req, res) =>{
     async function getWastesByCompanyId(companyId) {
         const wastes = await Wastes.findAll({
             where: {
