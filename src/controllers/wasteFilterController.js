@@ -12,7 +12,6 @@ export const wasteFilter = async (req, res) => {
     if (availableIn) {
       query.availableIn = availableIn;
     }
-
     if (startDate && endDate) {
       query.availableIn = {
         [Op.between]: [startDate, endDate]
