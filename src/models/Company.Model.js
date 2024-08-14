@@ -13,6 +13,11 @@ export const Company = database.define("Company",
             type: DataTypes.STRING(200),
             allowNull: false
         },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
         location:{
             type: DataTypes.STRING(200),
             allowNull: false
@@ -23,6 +28,10 @@ export const Company = database.define("Company",
         },
         status:{
             type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        password: {
+            type: DataTypes.STRING,
             allowNull: false
         }
     }
