@@ -225,3 +225,13 @@ Para configurar o ambiente do projeto, você precisará criar um arquivo de vari
    ```
    "dev": "nodemon src/server.js"
    ```
+### 💻 Como rodar?
+
+- Abra o terminal
+- Verifica se esta na pasta certa
+- Coloque o que você definiu no package.json, no meu caso foi dev, então coloca no terminal dessa forma:
+  ```
+  npm run dev
+- Pronto, agora é só testar
+
+### 🧪 Teste
