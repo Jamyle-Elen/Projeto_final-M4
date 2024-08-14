@@ -21,8 +21,10 @@ export const createCompany = async(req, res) => {
             capacityStorage,
             password: hashedPassword,
         });
-        
-        return res.status(201).json({message: "Company registered successfully", newCompany});
+
+        const companyData = newCompany.toJSON();
+        delete companyData.password;
+        return res.status(201).json({message: "Company registered successfully", newCompany: companyData });
 
     }catch(error){
         console.error('Erro que deu', error)
