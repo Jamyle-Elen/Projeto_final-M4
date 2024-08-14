@@ -4,7 +4,7 @@ import { Collection } from "../models/CollectionRequest.Model.js";
 await Collection.sync();
 
 export const createCollection = async (req, res)=> {
- const {companyId, wasteId, status, location, quantity} = req.body;
+ const {companyId, wasteId, location, quantity} = req.body;
  try{
     if(!companyId || !wasteId || !location || !quantity){
         return res.status(400).json({message: "Fill in all required fields"})
@@ -12,7 +12,6 @@ export const createCollection = async (req, res)=> {
     const newCollection = await Collection.create({
     companyId,
      wasteId,
-     status,
      location,
      quantity
     })
