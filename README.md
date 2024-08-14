@@ -97,7 +97,6 @@ A API Verde oferece, portanto, uma solução prática e escalável para o proble
         "express": "^4.19.2",
         "jest": "^29.7.0",
         "jsonwebtoken": "^9.0.2",
-        "mysql2": "^3.11.0",
         "nodemon": "^3.1.4",
         "sequelize": "^6.37.3",
         "sqlite3": "^5.1.7",
@@ -105,5 +104,134 @@ A API Verde oferece, portanto, uma solução prática e escalável para o proble
   }
   ~~~
   Onde:
-    - bcrypt (^5.1.1): Biblioteca para criptografar senhas de forma segura. Utiliza hashing (um processo que transforma a senha em uma string única e irreversível) para proteger senhas armazenadas.
   
+     - bcrypt (^5.1.1): Biblioteca para criptografar senhas de forma segura. Utiliza hashing (um processo que transforma a senha em uma string única e irreversível) para proteger senhas armazenadas.
+      
+    - cors (^2.8.5): Middleware para permitir que recursos de um servidor sejam acessados por outros domínios (Cross-Origin Resource Sharing). Ajuda a configurar as permissões de acesso entre diferentes origens de domínio.
+
+    - dotenv (^16.4.5): Carrega variáveis de ambiente a partir de um arquivo .env para dentro do process.env. Facilita a configuração de variáveis sensíveis e específicas de ambiente, como credenciais de banco de dados.
+
+    - express (^4.19.2): Framework para construir aplicações web e APIs em Node.js. Facilita o roteamento de requisições e a gestão de middlewares.
+    
+    - jest (^29.7.0): Framework de testes para JavaScript. Permite escrever e executar testes automatizados para garantir que o código funcione como esperado.
+
+    - jsonwebtoken (^9.0.2): Biblioteca para criar e verificar JSON Web Tokens (JWT). Usado para autenticação e autorização em aplicações web.
+    
+    - nodemon (^3.1.4): Ferramenta para desenvolvimento que reinicia automaticamente o servidor Node.js sempre que há alterações no código-fonte. Facilita o processo de desenvolvimento ao evitar a necessidade de reiniciar manualmente o servidor.
+
+    - sequelize (^6.37.3): ORM (Object-Relational Mapper) para Node.js que facilita a interação com bancos de dados SQL (como MySQL e SQLite) utilizando JavaScript. Permite definir modelos e fazer consultas de maneira mais intuitiva.
+
+    - sqlite3 (^5.1.7): Driver para SQLite em Node.js. Permite a comunicação e interação com um banco de dados SQLite a partir de uma aplicação Node.js.
+
+    - uuid (^10.0.0): Biblioteca para gerar identificadores únicos universais (UUIDs). Utilizado para criar IDs únicos para registros e objetos em uma aplicação.
+  
+# Funcionalidades das rotas
+As principais funcionalidades da API incluem:
+
+- Cadastro de Empresas
+- Solicitação de Coleta
+- Autenticação
+- Gerenciamento e Filtragem de Resíduos
+
+## Rotas sobre autenticação - auth.routes.js
+
+| Método | Rota                                | Função                                            |
+| ------ | ----------------------------------- | ------------------------------------------------- |
+| POST   | /register                           | Registrar a empresa                               |
+| POST   | /login                              | Login para a empresa já registrada                |
+
+## Rotas sobre solicitação de coleta - collectionRequest.routes.js
+
+| Método | Rota                                | Função                                            |
+| ------ | ----------------------------------- | ------------------------------------------------- |
+| POST   | /collection-request                 | Operação de criar solicitação da coleta           |
+| PATCH  | /collection/:id/status              | Operação de atualizar o status                    |
+| GET    | /collections                        | Operação de buscar todas as solicitações de coletas |
+
+
+## Rotas sobre empresas - company.routes.js
+| Método | Rota                                | Função                                            |
+| ------ | ----------------------------------- | ------------------------------------------------- |
+| GET    | /companies                          | Operação de buscar todas as empresas registradas  |
+| GET    | /companies/:id                      | Operação de busca por id                          |
+| PUT    | /companies/:id                      | Operação de atualizar os dados por id             |
+| DELETE | /companies/:id                      | Operação de deletar empresa via                   |
+
+
+## Rotas sobre resíduos - waste.routes.js
+| Método | Rota                                | Função                                            |
+| ------ | ----------------------------------- | ------------------------------------------------- |
+| POST   | /wastes                             | Operação de cadastro de resíduo                   |
+| GET    | /wastes                             | Operação de buscar todos os resíduos registradas  |
+| GET    | /wastes/:id                         | Operação de busca por id                          |
+| PUT    | /wastes/:id                         | Operação de atualizar os dados por id             |
+| DELETE | /wastes/:id                         | Operação de deletar resíduo via                   |
+
+## Rota sobre relatório - reports.routes.js
+
+| Método | Rota                                | Função                                            |
+| ------ | ----------------------------------- | ------------------------------------------------- |
+| GET    | /reports/:companyId                 | Operação de geração de relatório de resíduos por id da  empresa  |
+
+## Rota sobre relatório - healthCheck.routes.js
+
+| Método | Rota                                | Função                                            |
+| ------ | ----------------------------------- | ------------------------------------------------- |
+| GET    | /                                   |Operação de verificação da API                     |
+
+
+# 📥 Instalações/Configuração do ambiente
+Antes de instalar as dependências do projeto, certifique-se de que o Node.js esteja instalado em seu sistema. O [Node.js](https://nodejs.org/en/download/prebuilt-installer) é uma plataforma de JavaScript que permite executar código JavaScript fora do navegador e é necessário para gerenciar pacotes e executar scripts do projeto.
+
+Uma vez que o Node.js esteja instalado, você pode instalar todas as dependências do projeto executando o seguinte comando na raiz do diretório do projeto:
+```
+  npm install
+```
+ou 
+```
+  npm i
+```
+Este comando irá ler o arquivo package.json do projeto e instalar automaticamente todas as bibliotecas e pacotes necessários para o funcionamento do projeto.
+
+Para configurar o ambiente do projeto, você precisará criar um arquivo de variáveis de ambiente e adicionar um token secreto para JWT. Siga as instruções abaixo:
+- Renomear o Arquivo de Exemplo:
+    - renomeie o arquivo [.example-env](https://github.com/Jamyle-Elen/Projeto_final-M4/blob/main/.example-env) para `.env`.
+- Gerar o Token Secreto para JWT:
+   - Abra o terminal ou prompt de comando.
+   - Execute o seguinte comando para gerar uma string aleatória, que será usada como o token secreto para JWT:
+     
+     
+            node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+          
+  - Copie a string gerada.
+  - Atualizar o Arquivo `.env`:
+  - Abra o arquivo .env em um editor de texto.
+  - Localize a linha JWT_SECRET=ADICIONE AQUI O TOKEN GERADO e substitua ADICIONE AQUI O TOKEN GERADO pelo token que você gerou.
+    
+            
+            JWT_SECRET=seu-token-gerado-aqui
+
+    
+    - Salve as alterações e feche o arquivo `.env`.
+
+⚠ OBS: Este arquivo `.env` contém informações sensíveis e não deve ser compartilhado publicamente. Certifique-se de que este arquivo esteja listado no seu .gitignore para evitar que seja incluído em commits.
+
+### 🔄 Modificações no package.json
+
+- Adicionar:
+    ```
+  "type": "module"
+- Adicionar atalho para rodar (opcional): o nome você escolhe, normalmente é usado start ou dev
+   ```
+   "dev": "nodemon src/server.js"
+   ```
+### 💻 Como rodar?
+
+- Abra o terminal
+- Verifica se esta na pasta certa
+- Coloque o que você definiu no package.json, no meu caso foi dev, então coloca no terminal dessa forma:
+  ```
+  npm run dev
+- Pronto, agora é só testar
+
+### 🧪 Teste
