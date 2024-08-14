@@ -51,7 +51,21 @@ export const updateCollectionStatus = async(req, res) =>{
     }
 };
         
+export const getAllCollections = async (req, res) => {
+    try {
+        
+        const collections = await Collection.findAll();
 
+        if (collections.length < 1) {
+            return res.status(404).json({ message: "No collections found" });
+        }
+
+        return res.status(200).json({ collections });
+
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+};
 
 export const deleteCollection = async(req, res) =>{
     try{
@@ -70,3 +84,4 @@ export const deleteCollection = async(req, res) =>{
         return res.status(400).json({message: error})
     }
 };
+
