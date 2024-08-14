@@ -1,0 +1,8 @@
+# ⚠️ Renomeei este arquivo para `.env`. Após adicionar os dados às variáveis de ambiente, ele estará pronto para uso.
+
+# Adicione o token secreto para o JWT. 
+# (1) Abra seu terminal ou prompt de comando.
+# (1) Execute o seguinte script Node.js para gerar uma string aleatória:
+# `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+
+JWT_SECRET=ADICIONE AQUI O TOKEN GERADO

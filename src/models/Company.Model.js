@@ -28,7 +28,8 @@ export const Company = database.define("Company",
         },
         status:{
             type: DataTypes.BOOLEAN,
-            allowNull: false
+            allowNull: false,
+            defaultValue: true
         },
         password: {
             type: DataTypes.STRING,

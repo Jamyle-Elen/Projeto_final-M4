@@ -1,14 +1,14 @@
+import bcrypt from 'bcrypt';
 import { Company } from "../models/Company.Model.js";
 import { Wastes } from "../models/Waste.Model.js";
 
 await Company.sync();
 
 export const createCompany = async(req, res) => {
-    console.log('Olha o que deu', req.body)
-    const {name, email, location, capacityStorage, status, password} = req.body;
+    const {name, email, location, capacityStorage, password} = req.body;
 
     try{
-        if(!name || !email || !location || !capacityStorage || typeof status === 'undefined' || !password){
+        if(!name || !email || !location || !capacityStorage || !password){
             return res.status(400).json({message:"All fields are required"});
         }
 
@@ -19,8 +19,6 @@ export const createCompany = async(req, res) => {
             email, 
             location, 
             capacityStorage,
-            // ver se vou manter o status mesmo
-            status,
             password: hashedPassword,
         });
         
@@ -34,8 +32,6 @@ export const createCompany = async(req, res) => {
 
 export const getAllCompany = async(req, res) => {
     try{
-
-        // filtrei aq pra tirar email e senha de ser exibido
         const companies = await Company.findAll({
             attributes: ['id', 'name', 'location'],
         });
