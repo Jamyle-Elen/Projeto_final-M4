@@ -1,27 +1,33 @@
-import { where } from "sequelize";
 import { Company } from "../models/Company.Model.js";
 import { Wastes } from "../models/Waste.Model.js";
 
 await Company.sync();
 
 export const createCompany = async(req, res) => {
-    const {name, location, capacityStorage, status} = req.body;
+    console.log('Olha o que deu', req.body)
+    const {name, email, location, capacityStorage, status, password} = req.body;
 
     try{
-        if(!name || !location || !capacityStorage || typeof status === 'undefined'){
+        if(!name || !email || !location || !capacityStorage || typeof status === 'undefined' || !password){
             return res.status(400).json({message:"All fields are required"});
         }
 
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const newCompany = await Company.create({
-            name, 
+            name,
+            email, 
             location, 
             capacityStorage,
-            status
+            // ver se vou manter o status mesmo
+            status,
+            password: hashedPassword,
         });
         
-        return res.status(201).json({message: "Company created successfully", newCompany});
+        return res.status(201).json({message: "Company registered successfully", newCompany});
 
     }catch(error){
+        console.error('Erro que deu', error)
        return res.status(400).json({message: error});
     }
 };
@@ -29,7 +35,10 @@ export const createCompany = async(req, res) => {
 export const getAllCompany = async(req, res) => {
     try{
 
-        const companies = await Company.findAll();
+        // filtrei aq pra tirar email e senha de ser exibido
+        const companies = await Company.findAll({
+            attributes: ['id', 'name', 'location'],
+        });
         
         if(companies.length < 1){
             return res.status(400).json({message: "No company found"});
