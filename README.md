@@ -231,7 +231,20 @@ Para configurar o ambiente do projeto, você precisará criar um arquivo de vari
 - Verifica se esta na pasta certa
 - Coloque o que você definiu no package.json, no meu caso foi dev, então coloca no terminal dessa forma:
   ```
-  npm run dev
+  git clone (link do https do repositório)
+  ```
+  ```
+  npm i
+  ```
+  ```
+   npm run dev
+
 - Pronto, agora é só testar
 
 ### 🧪 Teste
+Para você realizar o teste tem duas formas:
+1. baixando esse arquivo: , para testar remotamente
+2. Usando o deploy, onde vc irá utilizar esse `link: https://projeto-final-m4-squad-1.onrender.com/` para testar no Postman ou no Insomnia.
+
+
+
