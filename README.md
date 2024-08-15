@@ -242,9 +242,13 @@ Para configurar o ambiente do projeto, você precisará criar um arquivo de vari
 - Pronto, agora é só testar
 
 ### 🧪 Teste
-Para você realizar o teste tem duas formas:
-1. baixando esse arquivo: , para testar remotamente
-2. Usando o deploy, onde vc irá utilizar esse `link: https://projeto-final-m4-squad-1.onrender.com/` para testar no Postman ou no Insomnia.
+
+Para realizar o teste do projeto, você tem duas opções:
+
+1. **Baixar o arquivo**: Você pode baixar o arquivo de configuração do POSTMAN para testar localmente. [Clique aqui para baixar o arquivo](https://github.com/Jamyle-Elen/Projeto_final-M4/tree/main/.github/projetoSquad.postman.json).
+
+2. **Usar o deploy**: Se preferir testar remotamente, utilize o seguinte link no Postman ou no Insomnia: `https://projeto-final-m4-squad-1.onrender.com/`.
+
 
 
 
