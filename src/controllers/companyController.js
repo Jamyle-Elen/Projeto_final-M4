@@ -78,7 +78,10 @@ export const getCompanyId = async(req, res) =>{
         const wastesId = await getWastesByCompanyId(id);
         company.dataValues.wastesId = wastesId;
 
-        return res.status(200).json({ company });
+        const companyData = company.toJSON();
+        delete companyData.password;
+
+        return res.status(200).json({ company: companyData });
 
     }catch(error){
         return res.status(400).json({message: error.message});

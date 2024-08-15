@@ -3,25 +3,21 @@ import { wasteFilter } from "./wasteFilterController.js";
 
 await Wastes.sync();
 
-export const createWaste = async (req, res) => {
-  function daysToAvailableDate(availableIn) {
-    const availableDate = new Date(availableIn);
-    const today = new Date();
-    const diffInMs = availableDate - today;
-    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
-    return diffInDays;
-  }
+function daysToAvailableDate(availableIn) {
+  const availableDate = new Date(availableIn);
+  const today = new Date();
+  const diffInMs = availableDate - today;
+  const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+  return diffInDays;
+}
 
+export const createWaste = async (req, res) => {
   try {
-    const { companyId, contactPhone, wastesName, composition, quantity, location, availableIn } = req.body;
-    const companyIdToken = req.user.id;
+    const { contactPhone, wastesName, composition, quantity, location, availableIn } = req.body;
+    const companyId = req.user.id;
 
     if (!companyId || !contactPhone || !wastesName || !composition || !quantity || !location || !availableIn) {
       return res.status(400).json({ message: "All fields are required" });
-    }
-
-    if(companyIdToken !== companyId){
-      return res.status(401).json({message: "You are not authorized, your companyId is not the same as your account"});
     }
 
     if (daysToAvailableDate(availableIn) < 0) {
@@ -85,8 +81,8 @@ export const updateWaste = async (req, res) => {
   try {
     const { id } = req.params;
     const companyIdToken = req.user.id;
+
     const {
-      companyId,
       contactPhone,
       wastesName,
       composition,
@@ -97,7 +93,6 @@ export const updateWaste = async (req, res) => {
 
     if (
       !id ||
-      !companyId ||
       !contactPhone ||
       !wastesName ||
       !composition ||
@@ -108,13 +103,20 @@ export const updateWaste = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    if(companyIdToken !== companyId){
+    if (daysToAvailableDate(availableIn) < 0) {
+      return res
+        .status(400)
+        .json({ message: "The available date must be a future date" });
+    }
+
+    const waste = await Wastes.findOne({ where: { id } });
+
+    if(companyIdToken !== waste.companyId){
       return res.status(401).json({message: "You are not authorized to update this waste"});
     }
 
     await Wastes.update(
       {
-        companyId,
         contactPhone,
         wastesName,
         composition,

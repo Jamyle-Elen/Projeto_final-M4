@@ -14,22 +14,21 @@ export const createCollection = async (req, res) => {
   };
 
   try {
-    const {companyId, wasteId, location, quantity} = req.body;
-    const companyIdToken = req.user.id;
+    const { wasteId, location, quantity} = req.body;
+    const companyId = req.user.id;
 
-    if (!companyId || !wasteId || !location || !quantity) {
+    if (!wasteId || !location || !quantity) {
       return res.status(400).json({ message: "Fill in all required fields" });
     }
 
-    if (companyIdToken !== companyId) {
-        return res.status(401).json({ message: "You are not authorized to create a collection for this company" });
+    const waste = await Wastes.findOne({ where: { id: wasteId } });
+    if (!waste) {
+      return res.status(404).json({ message: "Waste not found" });
     }
 
     if (await checkWasteId(wasteId)) {
       return res.status(404).json({ message: "This waste is already in a collection" });
     }
-
-    const waste = await Wastes.findOne({ where: { id: wasteId } });
 
     if(waste.companyId !== companyId) {
       return res.status(401).json({ message: "This waste is not from your company" });
@@ -39,7 +38,7 @@ export const createCollection = async (req, res) => {
       companyId,
       wasteId,
       location,
-      quantity,
+      quantity
     });
     
     return res.status(201).json({ message: "Request created", newCollection });
