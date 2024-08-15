@@ -13,26 +13,15 @@ export const createWaste = async (req, res) => {
   }
 
   try {
-    const {
-      companyId,
-      contactPhone,
-      wastesName,
-      composition,
-      quantity,
-      location,
-      availableIn,
-    } = req.body;
+    const { companyId, contactPhone, wastesName, composition, quantity, location, availableIn } = req.body;
+    const companyIdToken = req.user.id;
 
-    if (
-      !companyId ||
-      !contactPhone ||
-      !wastesName ||
-      !composition ||
-      !quantity ||
-      !location ||
-      !availableIn
-    ) {
+    if (!companyId || !contactPhone || !wastesName || !composition || !quantity || !location || !availableIn) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if(companyIdToken !== companyId){
+      return res.status(401).json({message: "You are not authorized, your companyId is not the same as your account"});
     }
 
     if (daysToAvailableDate(availableIn) < 0) {
@@ -95,6 +84,7 @@ export const getWasteById = async (req, res) => {
 export const updateWaste = async (req, res) => {
   try {
     const { id } = req.params;
+    const companyIdToken = req.user.id;
     const {
       companyId,
       contactPhone,
@@ -116,6 +106,10 @@ export const updateWaste = async (req, res) => {
       !availableIn
     ) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if(companyIdToken !== companyId){
+      return res.status(401).json({message: "You are not authorized to update this waste"});
     }
 
     await Wastes.update(
@@ -142,8 +136,15 @@ export const updateWaste = async (req, res) => {
 export const deleteWaste = async (req, res) => {
   try {
     const { id } = req.params;
+    const companyIdToken = req.user.id;
 
     if (!id) return res.status(400).json({ message: "Waste ID is required" });
+
+    const waste = await Wastes.findOne({ where: { id } });
+
+    if(companyIdToken !== waste.companyId){
+      return res.status(401).json({message: "You are not authorized to delete this waste"});
+    }
 
     await Wastes.destroy({ where: { id } });
 
@@ -152,3 +153,6 @@ export const deleteWaste = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+

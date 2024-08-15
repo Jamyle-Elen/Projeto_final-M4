@@ -12,6 +12,9 @@ export const createCompany = async(req, res) => {
             return res.status(400).json({message:"All fields are required"});
         }
 
+        const company = await Company.findOne({where: {email}});
+        if(company) return res.status(400).json({message: "E-mail already exists"});   
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newCompany = await Company.create({
@@ -61,7 +64,6 @@ export const getCompanyId = async(req, res) =>{
     }
 
     try{
-
         const { id } = req.params;
         const company = await Company.findOne({where: { id }});
 
@@ -87,9 +89,14 @@ export const updateCompany = async(req, res) =>{
     try{
         const { id } = req.params;
         const { name, location, capacityStorage, status } = req.body;
+        const companyIdToken = req.user.id;
 
-        if(!id || !name || !location || !capacityStorage || status){
+        if(!id || !name || !location || !capacityStorage || typeof status === 'undefined'){
             return res.status(400).json({message:"All fields are required"});
+        }
+
+        if(companyIdToken !== id){
+            return res.status(401).json({message: "You are not authorized to update this company"});
         }
 
         await Company.update({
@@ -111,11 +118,15 @@ export const updateCompany = async(req, res) =>{
 export const deleteCompany = async(req, res) =>{
 
     try{
-
         const { id } = req.params;
+        const companyIdToken = req.user.id;
 
         if(!id){
             return res.status(400).json({message: "Company id is required"});
+        }
+
+        if(companyIdToken !== id){
+            return res.status(401).json({message: "You are not authorized to delete this company"});
         }
 
         await Company.destroy({

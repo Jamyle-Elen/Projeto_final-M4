@@ -1,4 +1,3 @@
-
-export const helloSend =()=> {
-    return 'hello world'
-}
+export const helloSend = () => {
+  return "hello world";
+};

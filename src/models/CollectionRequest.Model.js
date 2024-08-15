@@ -44,8 +44,4 @@ export const Collection = database.define("Collection",
         allowNull: false
     }
 }}
-
 );
-
-
-

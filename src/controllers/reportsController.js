@@ -4,8 +4,11 @@ import { Sequelize } from 'sequelize';
 export const reports = async (req, res) => {
   try {
     const { companyId } = req.params;
+    const companyIdToken = req.user.id;
 
     if (!companyId) return res.status(400).json({ message: "Company ID is required" });
+
+    if (companyIdToken !== companyId) return res.status(401).json({ message: "You are not authorized to view this report" });
 
     const allWastes = await Wastes.findAll({
       where: {
